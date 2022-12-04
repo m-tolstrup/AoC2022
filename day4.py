@@ -1,4 +1,4 @@
-# https://adventofcode.com/2022/day/1
+# https://adventofcode.com/2022/day/4
 # By Mikkel Tolstrup Jensen
 from data.day4 import data
 
