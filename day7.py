@@ -45,13 +45,9 @@ def folder_total(folders):
                 accum += subfolder_total(folders, folder["dir"])
             elif key != "name":
                 accum += folder[key]
-        if accum <= 10_000:
+        if accum <= 100_000:
             total += accum
     return total
-
-
-def puzzle2(data):
-    pass
 
 
 if __name__ == '__main__':
@@ -65,4 +61,3 @@ if __name__ == '__main__':
 
     folders = puzzle1(data)
     print(folder_total(folders))
-    #print(puzzle2(data))
