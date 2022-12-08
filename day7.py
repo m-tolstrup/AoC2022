@@ -5,49 +5,36 @@
 # 13700
 
 
-def puzzle1(data):
-    folders = []
-    for command in data:
-        if command[1] == "cd" and command[2] != "..":
-            folders.append({"name": command[2]})
-        elif command[0].isnumeric():
-            folder = folders[-1]
-            folder[command[1]] = int(command[0])
-        elif command[0] == "dir":
-            folder = folders[-1]
-            if "dir" in folder:
-                folder["dir"].append(command[1])
+def puzzle1(commands, folder):
+    nested_cd_seen = False
+    root_set = False
+    layer = 0
+    for indx, command in enumerate(commands):
+        if "cd" in command and ".." not in command:
+            if not root_set:
+                folder["name"] = command[2]
+                root_set = True
+            elif layer == 0:
+                nested_cd_seen = True
+                if "dir" in folder:
+                    folder["dir"].append(puzzle1(commands[indx:], {}))
+                    layer += 1
+                else:
+                    folder["dir"] = [puzzle1(commands[indx:], {})]
+                    layer += 1
             else:
-                folder["dir"] = [command[1]]
-    return folders
-
-
-def subfolder_total(folders, subfolders):
-    total = 0
-    for folder in folders:
-        accum = 0
-        if folder["name"] in subfolders:
-            for key in folder:
-                if key == "dir":
-                    accum += subfolder_total(folders, folder["dir"])
-                elif key != "name":
-                    accum += folder[key]
-        total += accum
-    return total
-
-
-def folder_total(folders):
-    total = 0
-    for folder in folders:
-        accum = 0
-        for key in folder:
-            if key == "dir":
-                accum += subfolder_total(folders, folder["dir"])
-            elif key != "name":
-                accum += folder[key]
-        if accum <= 100_000:
-            total += accum
-    return total
+                layer += 1
+        elif command[0].isnumeric() and not nested_cd_seen:
+            if "total" in folder:
+                folder["total"] += int(command[0])
+            else:
+                folder["total"] = int(command[0])
+        elif ".." in command:
+            if layer != 0:
+                layer -= 1
+            else:
+                return folder
+    return folder
 
 
 if __name__ == '__main__':
@@ -59,5 +46,5 @@ if __name__ == '__main__':
             temp = line.split(" ")
             data.append(temp)
 
-    folders = puzzle1(data)
-    print(folder_total(folders))
+    root_folder = puzzle1(data, {})
+    print(root_folder)
