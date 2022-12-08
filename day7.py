@@ -13,6 +13,7 @@ def puzzle1(commands, folder):
         if "cd" in command and ".." not in command:
             if not root_set:
                 folder["name"] = command[2]
+                folder["total"] = 0
                 root_set = True
             elif layer == 0:
                 nested_cd_seen = True
@@ -25,10 +26,7 @@ def puzzle1(commands, folder):
             else:
                 layer += 1
         elif command[0].isnumeric() and not nested_cd_seen:
-            if "total" in folder:
-                folder["total"] += int(command[0])
-            else:
-                folder["total"] = int(command[0])
+            folder["total"] += int(command[0])
         elif ".." in command:
             if layer != 0:
                 layer -= 1
@@ -41,6 +39,7 @@ def puzzle1_count(folder):
     local = 0
     subfolders = 0
 
+    print(folder)
     for key in folder:
         if key == "total":
             local += folder[key]
@@ -61,6 +60,5 @@ if __name__ == '__main__':
             line = line[:len(line)-1]
             temp = line.split(" ")
             data.append(temp)
-
     root_folder = puzzle1(data, {})
     print(puzzle1_count(root_folder))
