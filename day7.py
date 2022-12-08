@@ -47,11 +47,8 @@ def puzzle1_count(folder):
         elif key == "dir":
             subfolders = sum([puzzle1_count(f) for f in folder["dir"]])
 
-    total = local + subfolders * 2
-    print(folder, local, total)
-
-    if total <= 100_000:
-        return total
+    if local + subfolders * 2 <= 100_000:
+        return local + subfolders * 2
     else:
         return subfolders
 
