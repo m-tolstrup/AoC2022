@@ -1,8 +1,8 @@
 # https://adventofcode.com/2022/day/7
 # By Mikkel Tolstrup Jensen
 
-# 115060550
-# 13700
+# 13700 low
+# 1627406 high
 
 
 def puzzle1(commands, folder):
@@ -37,6 +37,25 @@ def puzzle1(commands, folder):
     return folder
 
 
+def puzzle1_count(folder):
+    local = 0
+    subfolders = 0
+
+    for key in folder:
+        if key == "total":
+            local += folder[key]
+        elif key == "dir":
+            subfolders = sum([puzzle1_count(f) for f in folder["dir"]])
+
+    total = local + subfolders * 2
+    print(folder, local, total)
+
+    if total <= 100_000:
+        return total
+    else:
+        return subfolders
+
+
 if __name__ == '__main__':
     # Actually parsing
     data = []
@@ -47,4 +66,4 @@ if __name__ == '__main__':
             data.append(temp)
 
     root_folder = puzzle1(data, {})
-    print(root_folder)
+    print(puzzle1_count(root_folder))
