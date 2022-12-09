@@ -1,8 +1,5 @@
 # https://adventofcode.com/2022/day/7
 # By Mikkel Tolstrup Jensen
-
-# high 22685292
-
 def puzzle1(commands, folder):
     nested_cd_seen = False
     root_set = False
@@ -34,7 +31,7 @@ def puzzle1(commands, folder):
     return folder
 
 
-results = []
+sizes = []
 
 
 def puzzle1_count(folder):
@@ -47,39 +44,7 @@ def puzzle1_count(folder):
         elif key == "dir":
             subfolders = sum([puzzle1_count(f) for f in folder["dir"]])
 
-    if local + subfolders <= 100_000:
-        results.append(local+subfolders)
-
-    return local + subfolders
-
-
-def total_size(folder):
-    local = 0
-    subfolders = 0
-
-    for key in folder:
-        if key == "total":
-            local += folder[key]
-        elif key == "dir":
-            subfolders = sum([total_size(f) for f in folder["dir"]])
-
-    return local + subfolders
-
-
-can_remove = []
-
-
-def find_smallest_folder(folder):
-    local = 0
-    subfolders = 0
-
-    for key in folder:
-        if key == "total":
-            local += folder[key]
-        elif key == "dir":
-            subfolders = sum([find_smallest_folder(f) for f in folder["dir"]])
-
-    can_remove.append(local+subfolders)
+    sizes.append(local+subfolders)
 
     return local + subfolders
 
@@ -95,15 +60,13 @@ if __name__ == '__main__':
 
     # Puzzle 1
     root_folder = puzzle1(data, {})
-    _ = puzzle1_count(root_folder)
-    print(sum(results))
+    total_size = puzzle1_count(root_folder)
+    print(sum([num for num in sizes if num <= 100_000]))
 
-    total_size = total_size(root_folder)
-    print(total_size)
+    # Puzzle 2
     to_remove = total_size - 40_000_000
-    smallest_seen = total_size
-    find_smallest_folder(root_folder)
-    for element in can_remove:
-        if to_remove <= element <= smallest_seen:
-            smallest_seen = element
-    print(smallest_seen)
+    smallest_seen_size = total_size
+    for element in sizes:
+        if to_remove <= element <= smallest_seen_size:
+            smallest_seen_size = element
+    print(smallest_seen_size)
