@@ -21,7 +21,7 @@ def puzzle1(commands, folder):
                     level += 1
             else:
                 level += 1
-        elif command[0].isnumeric() and not nested_cd_seen: # all integers come before the forst nested cd
+        elif command[0].isnumeric() and not nested_cd_seen: # all files for folder come before the first nested cd
             folder["total"] += int(command[0])
         elif ".." in command: # count levels, if we return to zero, the folder we are working on is done
             if level != 0:
