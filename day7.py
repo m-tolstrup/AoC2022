@@ -1,5 +1,8 @@
 # https://adventofcode.com/2022/day/7
 # By Mikkel Tolstrup Jensen
+
+# high 22685292
+
 def puzzle1(commands, folder):
     nested_cd_seen = False
     root_set = False
@@ -38,7 +41,6 @@ def puzzle1_count(folder):
     local = 0
     subfolders = 0
 
-    print(folder)
     for key in folder:
         if key == "total":
             local += folder[key]
@@ -47,6 +49,37 @@ def puzzle1_count(folder):
 
     if local + subfolders <= 100_000:
         results.append(local+subfolders)
+
+    return local + subfolders
+
+
+def total_size(folder):
+    local = 0
+    subfolders = 0
+
+    for key in folder:
+        if key == "total":
+            local += folder[key]
+        elif key == "dir":
+            subfolders = sum([total_size(f) for f in folder["dir"]])
+
+    return local + subfolders
+
+
+can_remove = []
+
+
+def find_smallest_folder(folder):
+    local = 0
+    subfolders = 0
+
+    for key in folder:
+        if key == "total":
+            local += folder[key]
+        elif key == "dir":
+            subfolders = sum([find_smallest_folder(f) for f in folder["dir"]])
+
+    can_remove.append(local+subfolders)
 
     return local + subfolders
 
@@ -62,5 +95,15 @@ if __name__ == '__main__':
 
     # Puzzle 1
     root_folder = puzzle1(data, {})
-    total = puzzle1_count(root_folder)
+    _ = puzzle1_count(root_folder)
     print(sum(results))
+
+    total_size = total_size(root_folder)
+    print(total_size)
+    to_remove = total_size - 40_000_000
+    smallest_seen = total_size
+    find_smallest_folder(root_folder)
+    for element in can_remove:
+        if to_remove <= element <= smallest_seen:
+            smallest_seen = element
+    print(smallest_seen)
