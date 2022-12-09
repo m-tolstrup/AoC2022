@@ -35,6 +35,9 @@ def puzzle1(commands, folder):
     return folder
 
 
+results = []
+
+
 def puzzle1_count(folder):
     local = 0
     subfolders = 0
@@ -46,19 +49,23 @@ def puzzle1_count(folder):
         elif key == "dir":
             subfolders = sum([puzzle1_count(f) for f in folder["dir"]])
 
-    if local + subfolders * 2 <= 100_000:
-        return local + subfolders * 2
-    else:
-        return subfolders
+    if local + subfolders <= 100_000:
+        results.append(local+subfolders)
+
+    return local + subfolders
 
 
 if __name__ == '__main__':
-    # Actually parsing
+    # Actually parsing :)
     data = []
     with open("data/day7.txt") as f:
         for line in f:
             line = line[:len(line)-1]
             temp = line.split(" ")
             data.append(temp)
+
     root_folder = puzzle1(data, {})
-    print(puzzle1_count(root_folder))
+    total = puzzle1_count(root_folder)
+    print(sum(results))
+
+    target = sum(results) 70_000
