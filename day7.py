@@ -1,35 +1,31 @@
 # https://adventofcode.com/2022/day/7
 # By Mikkel Tolstrup Jensen
-
-# 13700 low
-# 1627406 high
-
-
 def puzzle1(commands, folder):
     nested_cd_seen = False
     root_set = False
-    layer = 0
+    level = 0
+    # Have a bowl of spaghetti on me
     for indx, command in enumerate(commands):
         if "cd" in command and ".." not in command:
-            if not root_set:
+            if not root_set: # first cd seen becomes the directory we work on
                 folder["name"] = command[2]
                 folder["total"] = 0
                 root_set = True
-            elif layer == 0:
+            elif level == 0: # future cds become subfolders, if they are on the correct subfolder level
                 nested_cd_seen = True
                 if "dir" in folder:
                     folder["dir"].append(puzzle1(commands[indx:], {}))
-                    layer += 1
+                    level += 1
                 else:
                     folder["dir"] = [puzzle1(commands[indx:], {})]
-                    layer += 1
+                    level += 1
             else:
-                layer += 1
-        elif command[0].isnumeric() and not nested_cd_seen:
+                level += 1
+        elif command[0].isnumeric() and not nested_cd_seen: # all integers come before the forst nested cd
             folder["total"] += int(command[0])
-        elif ".." in command:
-            if layer != 0:
-                layer -= 1
+        elif ".." in command: # count levels, if we return to zero, the folder we are working on is done
+            if level != 0:
+                level -= 1
             else:
                 return folder
     return folder
@@ -64,8 +60,7 @@ if __name__ == '__main__':
             temp = line.split(" ")
             data.append(temp)
 
+    # Puzzle 1
     root_folder = puzzle1(data, {})
     total = puzzle1_count(root_folder)
     print(sum(results))
-
-    target = sum(results) 70_000
