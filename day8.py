@@ -82,7 +82,7 @@ def look_down(data, i, j):
         return 0
     count = 0
     height = data[i][j]
-    for k in range(len(data)-1, i, -1):
+    for k in range(i+1, len(data)):
         if data[k][j] < height:
             count += 1
         else:
@@ -127,6 +127,7 @@ if __name__ == '__main__':
     # 1116
     # 28800
     # 321651
+    # 382278
     # 865592
     # 1254528
     print(puzzle2(data))
