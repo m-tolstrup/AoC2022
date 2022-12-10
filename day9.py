@@ -26,27 +26,27 @@ def puzzle(moves, rope):
 
                 if dx == 2:
                     rope[r][x] += 1
-                    if dy == 1:
+                    if dy >= 1:
                         rope[r][y] += 1
-                    elif dy == -1:
+                    elif dy <= -1:
                         rope[r][y] -= 1
                 elif dx == -2:
                     rope[r][x] -= 1
-                    if dy == 1:
+                    if dy >= 1:
                         rope[r][y] += 1
-                    elif dy == -1:
+                    elif dy <= -1:
                         rope[r][y] -= 1
                 elif dy == 2:
                     rope[r][y] += 1
-                    if dx == 1:
+                    if dx >= 1:
                         rope[r][x] += 1
-                    elif dx == -1:
+                    elif dx <= -1:
                         rope[r][x] -= 1
                 elif dy == -2:
                     rope[r][y] -= 1
-                    if dx == 1:
+                    if dx >= 1:
                         rope[r][x] += 1
-                    elif dx == -1:
+                    elif dx <= -1:
                         rope[r][x] -= 1
             print(rope)
             tail_set.add((rope[-1][x], rope[-1][y]))
