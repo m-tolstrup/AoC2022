@@ -48,7 +48,7 @@ def puzzle(moves, rope):
                         rope[r][x] += 1
                     elif dx <= -1:
                         rope[r][x] -= 1
-            print(rope)
+
             tail_set.add((rope[-1][x], rope[-1][y]))
 
     return len(tail_set)
@@ -58,5 +58,4 @@ if __name__ == '__main__':
     rope = []
     for i in range(10):
         rope.append([0,0])
-    # low 337
     print(puzzle(data, rope))
