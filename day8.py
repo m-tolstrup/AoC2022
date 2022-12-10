@@ -124,10 +124,9 @@ if __name__ == '__main__':
     for entry in data:
         marker_map.append("#"*len(entry))
     print(puzzle1(data, marker_map))
-    # low 1116
+    # 1116
     # 28800
     # 321651
+    # 865592
     # 1254528
-    # 1254528
-    # high 865592
     print(puzzle2(data))
