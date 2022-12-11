@@ -1,10 +1,14 @@
 # https://adventofcode.com/2022/day/11
 # By Mikkel Tolstrup Jensen
+import math
+
+
 class Monkey:
-    def __init__(self, items, op, divisor, true, false):
+    def __init__(self, items, op, op_num, divisor, true, false):
         self.items = items
         self.divisor = divisor
         self.op = op
+        self.op_num = op_num
         self.true = true
         self.false = false
         self.inspected_items = 0
@@ -14,14 +18,17 @@ class Monkey:
         self.inspected_items += 1
 
         # Monkey inspects
-        if self.op == "old":
+        if self.op_num == "old":
             new_item = item * item
         else:
-            new_item = item * self.op
+            if self.op == "*":
+                new_item = item * self.op_num
+            else:
+                new_item = item + self.op_num
 
         # Monkey gets bored
         new_item = new_item / 3
-        new_item = int(new_item)
+        new_item = int(math.floor(new_item))
 
         # Test and throw
         test = new_item % self.divisor
@@ -48,6 +55,7 @@ if __name__ == '__main__':
     monkeys = []
     items = []
     op = None
+    op_num = None
     divisor = None
     true = None
     false = None
@@ -65,9 +73,11 @@ if __name__ == '__main__':
                         items.append(int(ele))
                 elif l[0] == "Operation:":
                     if l[5].isnumeric():
-                        op = int(l[5])
+                        op = l[4]
+                        op_num = int(l[5])
                     else:
-                        op = l[5]
+                        op = l[4]
+                        op_num = l[5]
                 elif l[0] == "Test:":
                     divisor = int(l[3])
                 elif l[1] == "true:":
@@ -75,12 +85,12 @@ if __name__ == '__main__':
                 elif l[1] == "false:":
                     false = int(l[5])
             else:
-                monkey = Monkey(items, op, divisor, true, false)
+                monkey = Monkey(items, op, op_num, divisor, true, false)
                 monkeys.append(monkey)
                 items = []
 
     for m in monkeys:
-        print(m.items, m.op, m.divisor, m.true, m.false)
+        print(m.items, m.op, m.op_num, m.divisor, m.true, m.false)
 
     puzzle1(monkeys)
     # low 63500
