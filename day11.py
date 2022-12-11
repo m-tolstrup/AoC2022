@@ -26,6 +26,7 @@ class Monkey:
             else:
                 new_item = item + self.op_num
 
+        # Removed for part 2
         # Monkey gets bored
         new_item = new_item / 3
         new_item = int(math.floor(new_item))
@@ -89,12 +90,13 @@ if __name__ == '__main__':
                 monkeys.append(monkey)
                 items = []
 
-    for m in monkeys:
-        print(m.items, m.op, m.op_num, m.divisor, m.true, m.false)
-
     puzzle1(monkeys)
-    # low 63500
+
     count = []
     for monkey in monkeys:
         count.append(monkey.inspected_items)
+
     print(count)
+    m = max(count)
+    count.remove(m)
+    print(m * max(count))
