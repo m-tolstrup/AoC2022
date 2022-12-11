@@ -1,6 +1,6 @@
 # https://adventofcode.com/2022/day/8
 # By Mikkel Tolstrup Jensen
-from data.day8 import data, test
+from data.day8 import data
 
 
 def puzzle1(data, marker_map):
